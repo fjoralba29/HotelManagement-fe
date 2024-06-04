@@ -1,0 +1,6 @@
+export {default as Login} from './login/index'
+export {default as Register} from './register/index'
+export {default as NotFound} from './not-found/NotFound'
+export {default as Rezervation} from './rezervation/Rezervation'
+export {default as Trips} from './trips/Trips'
+export {default as UserInfo} from './user-info/UserInfo'

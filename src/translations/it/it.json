@@ -1,0 +1,12 @@
+{
+  "dates": {
+    "huge": "{{date, DATE_HUGE}}",
+    "medium": "{{date, DATE_MEDIUM}}",
+    "short": "{{date, DATE_SHORT}}"
+  },
+  "commons": {
+    "hello_world": "Ciao Mondo!",
+    "dog_one": "Un cane",
+    "dog_other": "{{count}} cani"
+  }
+}
