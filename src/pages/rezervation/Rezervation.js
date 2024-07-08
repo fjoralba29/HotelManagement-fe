@@ -10,6 +10,9 @@ import Datepicker from '../../components/date-picker/DatePicker'
 import { useForm, Controller } from 'react-hook-form'
 import { CalendarIcon } from '../../assets/icons/icons'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { useHotelsData } from '../../hooks/useHotelsData'
+
 
 const Rezervation = () => {
 
@@ -26,55 +29,73 @@ const Rezervation = () => {
 
     const {control} = useForm()
 
-    const getHotels = async () => {
-        try{
-            const { data }= await AuthAPI.hotels();
-            setHotels(data);
-        } catch (error) {
-
-        }
+    const onSucess = () => {
+        console.log("success");
     }
 
+    const onError = () => {
+        console.log("errorr");
+    }
+
+    const { data, isLoading, isError, error, isFetching, refetch } = useHotelsData(onSucess, onError)
+    useEffect(() => {
+        setHotels(data?.data)
+ //       getHotels()
+    },[data])
+    // const getHotels = async () => {
+    //     try{
+    //         const { data }= await AuthAPI.hotels();
+    //         setHotels(data);
+    //     } catch (error) {
+
+    //     }
+    // }
+    
     const getRooms = async (id) => {
         try {
           const { data } = await AuthAPI.rooms(id);
           setAvailableRooms(data);
         } catch (error) {
-          console.error('Error fetching rooms:', error);
+            console.error('Error fetching rooms:', error);
           setAvailableRooms([])
         }
     };
 
     const handleCard = (e) => { setCardNumber(e.target.value) }
     const handlePin = (e) => { setCardPin(e.target.value) }
-
+    
     const handleCheckIn = (date) => {setCheckin(date)}
-
-
+    
+    
     const handleRezervation = async () => {
         const clientId = localStorage.getItem("user")
         const data = {roomId, checkin, cardNumber, cardPin}
         try {
-    
-        const { response } = await AuthAPI.rezervation(clientId, data)
-        alert('Reservation Confirmed!')
-        navigate('/trips')
+            
+            const { response } = await AuthAPI.rezervation(clientId, data)
+            alert('Reservation Confirmed!')
+            navigate('/trips')
             
         } catch (error) {
             console.log(error, "errorrrr");
         }
     } 
-
-
- 
-    useEffect(() => {
-        getHotels()
-    },[])
-
+    
+    
+    console.log("hotelsss", hotels);
+    
     useEffect(() => {
         getRooms(hotelId)
     },[hotelId])
 
+    if (isLoading || isFetching) {
+        return <h2>Loading...</h2>
+    }
+
+    if (isError) {
+        return <h2>{error?.message}</h2>
+    }
+    
     return (
         <StyledContainer>
             <StyledRezervationContainer>
@@ -104,7 +125,7 @@ const Rezervation = () => {
                 <h2>Hotels</h2>
                 <StyledForms>
                     {hotels?.map((hotel) => (
-                        <Formcard text={hotel.hotel_name} description={hotel.rating} onClick={() => { setHotelId(hotel.id)}} />
+                        <Formcard key={hotel.id} text={hotel.hotel_name} description={hotel.rating} onClick={() => { setHotelId(hotel.id)}} />
                     ))}
                 </StyledForms>
                 {availableRooms != 0 && 
