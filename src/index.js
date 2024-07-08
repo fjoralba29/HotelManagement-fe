@@ -5,6 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import './theme/bootstrap-grid.min.css'
 import './theme/bootstrap-utilities.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import './styles/tailwind.css';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
