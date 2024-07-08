@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import LocalStorageManager from '../../../utilities/local-storage-manager';
 import { Link } from 'react-router-dom';
 import { ROUTE_SIGNUP } from '../../../utilities/constants';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 
 const LoginForm = () => {
@@ -24,7 +25,7 @@ const LoginForm = () => {
         reValidateMode: 'onChange',
         nativeValidation: false,
         shouldFocusError: true,
-        resolver: yupResolver(validationSchema),
+        resolver: zodResolver(validationSchema),
     })
 
     const {
